@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from controller.dao import get_user_info
+from controller.dao import get_user_info, get_article_info
 app = Flask(__name__)
 
 
@@ -16,6 +16,13 @@ def valid(username, password):
         return jsonify(returndict)
     return 'Fail', 500
 
+@app.route("/article/<title>/", methods=['GET'])
+def getarticle(title):
+    result = get_article_info(title)
+    if result:
+        returndict = {'content':result[2]}
+        return jsonify(returndict)
+    return 'Fail', 500
 
 if __name__ == '__main__':
     app.run( port=8000, debug=True)
