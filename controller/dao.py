@@ -23,5 +23,19 @@ def get_article_info(title):
     cnx.close()
     return result
 
+def register_user(user):
+    cnx = connector.get_conn()
+    cursor = cnx.cursor()
+    try:
+        query = "insert into userinfo values ('{}','{}','user')".format(user['username'],user['password'])
+        cursor.execute(query)
+        cursor.close()
+        cnx.close()
+        return True
+    except:
+        cursor.close()
+        cnx.close()
+        return False
+
 if __name__=='__main__':
     get_user_info('kurt')

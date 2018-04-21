@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-from controller.dao import get_user_info, get_article_info
+from flask import Flask, jsonify, request
+from controller.dao import get_user_info, get_article_info, register_user
 app = Flask(__name__)
 
 
@@ -27,6 +27,14 @@ def getarticle(title):
         res = jsonify(returndict)
         res.headers['Access-Control-Allow-Origin'] = '*'
         return res
+    return 'Fail', 500
+
+
+@app.route("/user/adduser", methods=['POST'])
+def registeruser():
+    user = request.get_json()
+    if register_user(user):
+        return 'Success'
     return 'Fail', 500
 
 
