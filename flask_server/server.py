@@ -30,12 +30,21 @@ def getarticle(title):
     return 'Fail', 500
 
 
-@app.route("/user/adduser", methods=['POST'])
-def registeruser():
-    user = request.get_json()
+@app.route("/user/adduser/<username>/password/<password>", methods=['GET'])
+def registeruser(username, password):
+    user = {'username': username, 'password': password}
     if register_user(user):
         return 'Success'
     return 'Fail', 500
+
+
+@app.after_request
+def apply_header(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 if __name__ == '__main__':
